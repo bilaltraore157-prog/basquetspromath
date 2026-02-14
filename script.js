@@ -9,24 +9,22 @@ function changerOnglet(mode) {
     document.getElementById('result-area').style.display = 'none';
 }
 
-function calculerSommesDirectes() {
-    const dI = document.querySelectorAll('#row-dom input');
-    const eI = document.querySelectorAll('#row-ext input');
-    for (let i = 0; i < 5; i++) {
-        const valD = parseInt(dI[i].value) || 0;
-        const valE = parseInt(eI[i].value) || 0;
-        document.getElementById(`t${i+1}`).innerText = (valD + valE) > 0 ? (valD + valE) : "-";
-    }
-}
-
-// FIX MOBILE : Force la fermeture de la liste après sélection
+// FORCE LE NETTOYAGE DU CHAMP SUR MOBILE POUR ÉVITER LE BLOCAGE
 function setupMobileFix(id) {
-    document.getElementById(id).addEventListener('input', function(e) {
+    const input = document.getElementById(id);
+    
+    // Si l'utilisateur clique, on vide le champ pour laisser la liste s'afficher proprement
+    input.addEventListener('click', function() {
+        this.value = '';
+    });
+
+    // Dès qu'une équipe est détectée, on ferme le clavier immédiatement
+    input.addEventListener('input', function(e) {
         const val = e.target.value;
         const options = document.getElementById('nba-teams').options;
         for (let i = 0; i < options.length; i++) {
-            if (options[i].value === val) {
-                e.target.blur(); // Nettoie le focus pour libérer le champ suivant
+            if (options[i].value.toLowerCase() === val.toLowerCase()) {
+                input.blur(); // Ferme le clavier
                 break;
             }
         }
@@ -65,20 +63,28 @@ function afficherTout(domArr, extArr) {
 }
 
 async function analyserAutomatique() {
-    const nD = document.getElementById('search-dom').value.trim().toLowerCase();
-    const nE = document.getElementById('search-ext').value.trim().toLowerCase();
-    if (!nD || !nE) return alert("Sélectionnez les deux équipes !");
+    const nD = document.getElementById('search-dom').value.trim();
+    const nE = document.getElementById('search-ext').value.trim();
+    
+    if (!nD || !nE) {
+        alert("Choisis bien les deux équipes dans la liste !");
+        return;
+    }
 
     try {
         const res = await fetch(API_EQUIPES);
         const data = await res.json();
-        const d = data.find(e => e.equipe.toLowerCase().includes(nD));
-        const e = data.find(e => e.equipe.toLowerCase().includes(nE));
+        
+        // Recherche plus flexible (insensible à la casse)
+        const d = data.find(e => e.equipe.toLowerCase() === nD.toLowerCase());
+        const e = data.find(e => e.equipe.toLowerCase() === nE.toLowerCase());
 
         if (d && e) {
             afficherTout(d.matchs.map(m=>m.score), e.matchs.map(m=>m.score));
-        } else { alert("Équipe introuvable. Utilisez la liste."); }
-    } catch (err) { alert("Erreur de connexion."); }
+        } else { 
+            alert("Erreur : Assure-toi d'écrire le nom EXACT de l'équipe ou de la choisir dans la liste."); 
+        }
+    } catch (err) { alert("Erreur de connexion aux données."); }
 }
 
 function calculerManuel() {
@@ -88,11 +94,23 @@ function calculerManuel() {
     afficherTout(sD, sE);
 }
 
+function calculerSommesDirectes() {
+    const dI = document.querySelectorAll('#row-dom input');
+    const eI = document.querySelectorAll('#row-ext input');
+    for (let i = 0; i < 5; i++) {
+        const valD = parseInt(dI[i].value) || 0;
+        const valE = parseInt(eI[i].value) || 0;
+        document.getElementById(`t${i+1}`).innerText = (valD + valE) > 0 ? (valD + valE) : "-";
+    }
+}
+
 (async function init() {
     const idCode = "BASQUET-" + Math.abs(screen.width * navigator.userAgent.length);
     document.getElementById('my-id').innerText = idCode;
+    
     setupMobileFix('search-dom');
     setupMobileFix('search-ext');
+    
     try {
         const res = await fetch(API_USERS);
         const users = await res.json();
