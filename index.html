@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>BasquetsProMath | Expert NBA</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
@@ -78,16 +78,22 @@
             <div id="pro-unlocked" style="display: none;">
                 <div class="search-area pro-search">
                     <p class="expert-slogan">⚡ ANALYSE IA : PRÉCISION 95% ACTIVÉE</p>
-                    <div class="input-group">
-                        <label>🏠 Équipe Domicile</label>
-                        <input type="text" id="search-dom" class="pro-input" list="nba-teams" placeholder="Ex: Lakers" autocomplete="off">
+                    
+                    <div class="input-group-mobile">
+                        <label>🏠 ÉQUIPE DOMICILE</label>
+                        <input type="text" id="search-dom" class="pro-input" list="nba-teams" placeholder="Choisir équipe..." autocomplete="off" inputmode="text">
                     </div>
-                    <div class="vs-badge">VS</div>
-                    <div class="input-group">
-                        <label>🚌 Équipe Extérieur</label>
-                        <input type="text" id="search-ext" class="pro-input" list="nba-teams" placeholder="Ex: Mavericks" autocomplete="off">
+
+                    <div class="vs-badge-container">
+                        <span class="vs-badge">VS</span>
                     </div>
-                    <button class="btn-analyze" onclick="analyserAutomatique()">LANCER RECHERCHE IA</button>
+
+                    <div class="input-group-mobile">
+                        <label>🚌 ÉQUIPE EXTÉRIEUR</label>
+                        <input type="text" id="search-ext" class="pro-input" list="nba-teams" placeholder="Choisir équipe..." autocomplete="off" inputmode="text">
+                    </div>
+
+                    <button class="btn-analyze pro-btn-margin" onclick="analyserAutomatique()">LANCER RECHERCHE IA</button>
                 </div>
 
                 <datalist id="nba-teams">
@@ -114,3 +120,4 @@
     <script src="script.js"></script>
 </body>
 </html>
+
