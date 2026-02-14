@@ -19,6 +19,20 @@ function calculerSommesDirectes() {
     }
 }
 
+// FIX MOBILE : Force la fermeture de la liste après sélection
+function setupMobileFix(id) {
+    document.getElementById(id).addEventListener('input', function(e) {
+        const val = e.target.value;
+        const options = document.getElementById('nba-teams').options;
+        for (let i = 0; i < options.length; i++) {
+            if (options[i].value === val) {
+                e.target.blur(); // Nettoie le focus pour libérer le champ suivant
+                break;
+            }
+        }
+    });
+}
+
 function afficherTout(domArr, extArr) {
     const historyBody = document.getElementById('body-history');
     if(historyBody) {
@@ -36,7 +50,6 @@ function afficherTout(domArr, extArr) {
     });
 
     const dS = calc(domArr), eS = calc(extArr);
-
     document.getElementById('body-result').innerHTML = `
         <tr><td>🏠 Domicile</td><td>${dS.min}</td><td>${dS.max}</td><td>${dS.moy}</td></tr>
         <tr><td>🚌 Extérieur</td><td>${eS.min}</td><td>${eS.max}</td><td>${eS.moy}</td></tr>
@@ -48,12 +61,13 @@ function afficherTout(domArr, extArr) {
         </tr>
     `;
     document.getElementById('result-area').style.display = 'block';
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
 }
 
 async function analyserAutomatique() {
     const nD = document.getElementById('search-dom').value.trim().toLowerCase();
     const nE = document.getElementById('search-ext').value.trim().toLowerCase();
-    if (!nD || !nE) return alert("Entrez les noms !");
+    if (!nD || !nE) return alert("Sélectionnez les deux équipes !");
 
     try {
         const res = await fetch(API_EQUIPES);
@@ -63,20 +77,22 @@ async function analyserAutomatique() {
 
         if (d && e) {
             afficherTout(d.matchs.map(m=>m.score), e.matchs.map(m=>m.score));
-        } else { alert("Équipes non trouvées dans l'API."); }
-    } catch (err) { alert("Erreur serveur."); }
+        } else { alert("Équipe introuvable. Utilisez la liste."); }
+    } catch (err) { alert("Erreur de connexion."); }
 }
 
 function calculerManuel() {
     const sD = Array.from(document.querySelectorAll('#row-dom input')).map(i => parseInt(i.value) || 0);
     const sE = Array.from(document.querySelectorAll('#row-ext input')).map(i => parseInt(i.value) || 0);
-    if (sD.includes(0) || sE.includes(0)) return alert("Remplissez tout !");
+    if (sD.includes(0) || sE.includes(0)) return alert("Remplissez tous les scores !");
     afficherTout(sD, sE);
 }
 
 (async function init() {
     const idCode = "BASQUET-" + Math.abs(screen.width * navigator.userAgent.length);
     document.getElementById('my-id').innerText = idCode;
+    setupMobileFix('search-dom');
+    setupMobileFix('search-ext');
     try {
         const res = await fetch(API_USERS);
         const users = await res.json();
