@@ -21,8 +21,15 @@
 
         <section id="section-gratuit" class="content-section">
             <div class="card-info">
-                <h3>🛠️ Calculateur Manuel</h3>
-                <div class="input-expert">
+                <div class="hook-container">
+                    <p class="hook-text">✨ Fatigué de saisir les scores à la main ?</p>
+                </div>
+                
+                <div class="calculator-header">
+                    <h3>🛠️ Calculateur Manuel</h3>
+                </div>
+                
+                <div class="input-group">
                     <label>🏠 Équipe Domicile (5 scores)</label>
                     <div class="score-row" id="row-dom">
                         <input type="number" class="s-in" placeholder="00" oninput="calculerSommesDirectes()">
@@ -32,7 +39,8 @@
                         <input type="number" class="s-in" placeholder="00" oninput="calculerSommesDirectes()">
                     </div>
                 </div>
-                <div class="input-expert">
+                
+                <div class="input-group">
                     <label>🚌 Équipe Extérieur (5 scores)</label>
                     <div class="score-row" id="row-ext">
                         <input type="number" class="s-in" placeholder="00" oninput="calculerSommesDirectes()">
@@ -42,7 +50,8 @@
                         <input type="number" class="s-in" placeholder="00" oninput="calculerSommesDirectes()">
                     </div>
                 </div>
-                <div class="input-expert total-direct">
+
+                <div class="input-group total-section">
                     <label>🔥 TOTAL PAR MATCH (Somme)</label>
                     <div class="score-row">
                         <div class="t-box" id="t1">-</div>
@@ -59,20 +68,24 @@
         <section id="section-pro" class="content-section" style="display: none;">
             <div id="pro-locked">
                 <div class="card-lock">
-                    <p>🔒 Mode PRO désactivé</p>
-                    <button class="btn-pay" onclick="location.href='#'">ACTIVER (12 000 FCFA)</button>
+                    <p class="lock-icon">🔒</p>
+                    <h2 class="promo-title">PASSEZ À LA VITESSE SUPÉRIEURE</h2>
+                    <p class="promo-text">Laissez l'IA chercher les scores pour vous et débloquez des pronostics avec 95% de précision.</p>
+                    <button class="btn-pay" onclick="window.open('https://digipreneur.mychariow.shop/jumia-n/checkout', '_blank')">ACTIVER LE MODE PRO (12 000 FCFA)</button>
                 </div>
             </div>
+            
             <div id="pro-unlocked" style="display: none;">
                 <div class="search-area pro-search">
-                    <div class="input-expert">
+                    <p class="expert-slogan">⚡ ANALYSE IA : PRÉCISION 95% ACTIVÉE</p>
+                    <div class="input-group">
                         <label>🏠 Équipe Domicile</label>
-                        <input type="text" id="search-dom" class="pro-input" list="nba-teams" placeholder="Tapez Lakers..." autocomplete="off">
+                        <input type="text" id="search-dom" class="pro-input" list="nba-teams" placeholder="Ex: Lakers" autocomplete="off">
                     </div>
                     <div class="vs-badge">VS</div>
-                    <div class="input-expert last-input-pro">
+                    <div class="input-group">
                         <label>🚌 Équipe Extérieur</label>
-                        <input type="text" id="search-ext" class="pro-input" list="nba-teams" placeholder="Tapez Mavericks..." autocomplete="off">
+                        <input type="text" id="search-ext" class="pro-input" list="nba-teams" placeholder="Ex: Mavericks" autocomplete="off">
                     </div>
                     <button class="btn-analyze" onclick="analyserAutomatique()">LANCER RECHERCHE IA</button>
                 </div>
@@ -81,11 +94,9 @@
                     <option value="Atlanta Hawks"><option value="Boston Celtics"><option value="Brooklyn Nets"><option value="Charlotte Hornets"><option value="Chicago Bulls"><option value="Cleveland Cavaliers"><option value="Dallas Mavericks"><option value="Denver Nuggets"><option value="Detroit Pistons"><option value="Golden State Warriors"><option value="Houston Rockets"><option value="Indiana Pacers"><option value="LA Clippers"><option value="Los Angeles Lakers"><option value="Memphis Grizzlies"><option value="Miami Heat"><option value="Milwaukee Bucks"><option value="Minnesota Timberwolves"><option value="New Orleans Pelicans"><option value="New York Knicks"><option value="Oklahoma City Thunder"><option value="Orlando Magic"><option value="Philadelphia 76ers"><option value="Phoenix Suns"><option value="Portland Trail Blazers"><option value="Sacramento Kings"><option value="San Antonio Spurs"><option value="Toronto Raptors"><option value="Utah Jazz"><option value="Washington Wizards">
                 </datalist>
 
-                <div id="pro-matchs-history" class="result-card" style="display: none; margin-top:15px;">
-                    <h4 style="color:var(--gold); font-size: 11px; margin-bottom:10px; text-align:center;">📊 HISTORIQUE DES 5 MATCHS</h4>
-                    <table class="tableau-pronos mini-table">
-                        <tbody id="body-history"></tbody>
-                    </table>
+                <div id="pro-matchs-history" class="result-card" style="display: none;">
+                    <h4 class="history-title">📊 HISTORIQUE DES 5 DERNIERS MATCHS</h4>
+                    <table class="tableau-pronos mini-table"><tbody id="body-history"></tbody></table>
                 </div>
             </div>
         </section>
