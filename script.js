@@ -101,5 +101,5 @@ function calculerManuel() {
             document.getElementById('pro-locked').style.display = 'none';
         }
     } catch (e) {}
-})();
+})();vvvvv
 
