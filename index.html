@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BasquetsProMath | Expert NBA</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <h1 class="logo">🏀 BasquetsProMath</h1>
+        </header>
+
+        <div class="mode-switch">
+            <button id="btn-gratuit" class="active" onclick="changerOnglet('gratuit')">GRATUIT</button>
+            <button id="btn-pro" onclick="changerOnglet('pro')">PRO 👑</button>
+        </div>
+
+        <section id="section-gratuit">
+            <div class="card-info">
+                <h3 style="text-align:center; margin-bottom: 5px;">🛠️ Saisie Manuelle</h3>
+                
+                <div style="background: rgba(255, 215, 0, 0.1); border: 1px dashed #FFD700; border-radius: 10px; padding: 10px; margin-bottom: 15px; text-align: center;">
+                    <p style="margin:0; font-size:0.85em; color:#FFD700; font-weight: bold;">
+                        ⚡ Gagnez du temps ! Le Mode PRO extrait ces scores automatiquement pour vous.
+                    </p>
+                </div>
+
+                <p style="font-size: 0.9em; margin-bottom: 5px;">🏠 Domicile (5 derniers)</p>
+                <div class="score-line" id="row-dom-gratuit">
+                    <input type="number" class="s-in" placeholder="00">
+                    <input type="number" class="s-in" placeholder="00">
+                    <input type="number" class="s-in" placeholder="00">
+                    <input type="number" class="s-in" placeholder="00">
+                    <input type="number" class="s-in" placeholder="00">
+                </div>
+
+                <p style="font-size: 0.9em; margin-bottom: 5px; margin-top: 10px;">🚌 Extérieur (5 derniers)</p>
+                <div class="score-line" id="row-ext-gratuit">
+                    <input type="number" class="s-in" placeholder="00">
+                    <input type="number" class="s-in" placeholder="00">
+                    <input type="number" class="s-in" placeholder="00">
+                    <input type="number" class="s-in" placeholder="00">
+                    <input type="number" class="s-in" placeholder="00">
+                </div>
+
+                <p style="font-size: 0.85em; margin-bottom: 5px; margin-top: 15px; color: #FFD700; font-weight: bold; text-align: center;">📊 TOTAUX PAR MATCH</p>
+                <div class="score-line" id="row-total-gratuit">
+                    <div class="s-in-total">-</div>
+                    <div class="s-in-total">-</div>
+                    <div class="s-in-total">-</div>
+                    <div class="s-in-total">-</div>
+                    <div class="s-in-total">-</div>
+                </div>
+
+                <button class="btn-analyze-main" style="margin-top: 15px;" onclick="calculer()">ANALYSER GRATUIT</button>
+                
+                <div id="res-gratuit" class="result-card" style="display:none; margin-top:15px;">
+                    <table class="tableau-pronos">
+                        <thead><tr><th>EQUIPE</th><th>MIN</th><th>MAX</th><th>MOY</th></tr></thead>
+                        <tbody id="body-gratuit"></tbody>
+                        <tfoot id="foot-gratuit"></tfoot>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="section-pro" style="display: none;">
+            <div id="pro-locked" class="card-lock" style="text-align:center">
+                <p>🔒 Accès réservé aux membres PRO</p>
+                <button class="btn-analyze-main" onclick="window.open('https://bilaltraore157-prog.github.io/payement.com/', '_blank')">ACTIVER LE MODE PRO</button>
+            </div>
+
+            <div id="pro-unlocked" style="display: none;">
+                <div class="card-info">
+                    <h3 style="color:#FFD700; text-align:center">🔍 Scan Temps Réel</h3>
+                    <input type="text" id="team-a" class="s-in-pro" placeholder="Equipe Domicile">
+                    <input type="text" id="team-b" class="s-in-pro" placeholder="Equipe Extérieur">
+                    <button class="btn-analyze-main" onclick="extrairePro()">EXTRAIRE & ANALYSER PRO</button>
+                    <div id="status-pro" style="margin-top:10px; text-align:center; font-size:0.85em"></div>
+                </div>
+
+                <div id="check-matches-pro" class="card-info" style="display:none; border: 1px solid #444;">
+                    <h4 style="margin:0 0 10px 0; font-size:0.75em; color:#FFD700; text-align:center;">📅 PREUVE : 5 DERNIERS MATCHS</h4>
+                    <table class="tableau-history">
+                        <thead>
+                            <tr>
+                                <th>DATE</th>
+                                <th>DOM</th>
+                                <th>SCR</th>
+                                <th>EXT</th>
+                                <th style="color:#FFD700">TOT.</th>
+                            </tr>
+                        </thead>
+                        <tbody id="list-matches-pro"></tbody>
+                    </table>
+                </div>
+
+                <div id="res-pro" class="result-card" style="display:none; border: 2px solid #FFD700;">
+                    <h3 style="text-align:center; color:#FFD700; margin:0;">🏆 PRONOSTIC VIP PRO</h3>
+                    <table class="tableau-pronos">
+                        <thead><tr><th>EQUIPE</th><th>MIN</th><th>MAX</th><th>MOY</th></tr></thead>
+                        <tbody id="body-pro"></tbody>
+                        <tfoot id="foot-pro"></tfoot>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <footer style="text-align:center; margin-top:20px; font-size:0.7em; opacity:0.5;">
+            ID APPAREIL : <span id="my-id"></span>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
