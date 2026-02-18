@@ -25,8 +25,15 @@ function ecouterSaisieGratuite() {
     });
 }
 
-// --- NOUVEAU MODULE : PRÉDICTION OVER/UNDER ---
+// --- MODULE PRÉDICTION (EXCLUSIVITÉ PRO 😂) ---
 function ajouterPredictionOverUnder(zone) {
+    // BUSINESS LOGIC : On bloque l'affichage si c'est la zone gratuite
+    if (zone === 'gratuit') {
+        const oldPred = document.getElementById(`pred-box-gratuit`);
+        if (oldPred) oldPred.remove();
+        return; 
+    }
+
     const foot = document.getElementById(`foot-${zone}`);
     if (!foot) return;
 
@@ -98,7 +105,7 @@ function calculer() {
     const sD = Array.from(document.querySelectorAll('#row-dom-gratuit input')).map(i => parseInt(i.value) || 0);
     const sE = Array.from(document.querySelectorAll('#row-ext-gratuit input')).map(i => parseInt(i.value) || 0);
     afficherResultat(sD, sE, 'gratuit');
-    ajouterPredictionOverUnder('gratuit'); // Appel prédiction
+    ajouterPredictionOverUnder('gratuit'); 
 }
 
 async function extrairePro() {
@@ -148,7 +155,7 @@ async function extrairePro() {
         document.getElementById('check-matches-pro').style.display = 'block';
         status.innerHTML = "✅ Scores synchronisés !";
         afficherResultat(scD, scE, 'pro');
-        ajouterPredictionOverUnder('pro'); // Appel prédiction
+        ajouterPredictionOverUnder('pro'); 
     } catch (e) { status.innerHTML = "❌ " + e.message; }
 }
 
@@ -173,3 +180,4 @@ window.onload = () => {
     verifier();
     ecouterSaisieGratuite();
 };
+
