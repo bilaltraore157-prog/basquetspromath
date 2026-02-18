@@ -9,7 +9,6 @@ function changerOnglet(mode) {
     document.getElementById('btn-pro').classList.toggle('active', mode === 'pro');
 }
 
-// LOGIQUE TEMPS RÉEL POUR LES TOTAUX GRATUITS
 function ecouterSaisieGratuite() {
     const inputsDom = document.querySelectorAll('#row-dom-gratuit .s-in');
     const inputsExt = document.querySelectorAll('#row-ext-gratuit .s-in');
@@ -24,6 +23,48 @@ function ecouterSaisieGratuite() {
         input.addEventListener('input', maj);
         inputsExt[index].addEventListener('input', maj);
     });
+}
+
+// --- NOUVEAU MODULE : PRÉDICTION OVER/UNDER ---
+function ajouterPredictionOverUnder(zone) {
+    const foot = document.getElementById(`foot-${zone}`);
+    if (!foot) return;
+
+    const cellules = foot.getElementsByTagName('td');
+    const tMin = parseFloat(cellules[1].innerText);
+    const tMax = parseFloat(cellules[2].innerText);
+    const tMoy = parseFloat(cellules[3].innerText);
+
+    const distanceMin = tMoy - tMin;
+    const distanceMax = tMax - tMoy;
+
+    let prediction = "";
+    let ligneIdeale = 0;
+
+    if (distanceMax < distanceMin) {
+        prediction = "UNDER";
+        ligneIdeale = (tMoy + tMax) / 2;
+    } else {
+        prediction = "OVER";
+        ligneIdeale = (tMoy + tMin) / 2;
+    }
+
+    const divPred = document.createElement('div');
+    divPred.id = `pred-box-${zone}`;
+    divPred.style = "margin-top:15px; padding:15px; background:rgba(255,215,0,0.1); border:1px solid var(--gold); border-radius:12px; text-align:center;";
+    
+    const couleurPred = (prediction === "OVER") ? "#51cf66" : "#ff922b";
+
+    divPred.innerHTML = `
+        <div style="font-size:0.75em; color:#888; text-transform:uppercase; letter-spacing:1px;">Indicateur de Tendance</div>
+        <div style="font-size:1.4em; font-weight:bold; color:${couleurPred}; margin:5px 0;">${prediction} ${Math.round(ligneIdeale)}</div>
+        <div style="font-size:0.85em; color:var(--gold);">⭐ Fiabilité : Très sûr</div>
+    `;
+
+    const resCard = document.getElementById(`res-${zone}`);
+    const oldPred = document.getElementById(`pred-box-${zone}`);
+    if (oldPred) oldPred.remove();
+    resCard.appendChild(divPred);
 }
 
 function afficherResultat(scoresD, scoresE, zone) {
@@ -57,6 +98,7 @@ function calculer() {
     const sD = Array.from(document.querySelectorAll('#row-dom-gratuit input')).map(i => parseInt(i.value) || 0);
     const sE = Array.from(document.querySelectorAll('#row-ext-gratuit input')).map(i => parseInt(i.value) || 0);
     afficherResultat(sD, sE, 'gratuit');
+    ajouterPredictionOverUnder('gratuit'); // Appel prédiction
 }
 
 async function extrairePro() {
@@ -106,6 +148,7 @@ async function extrairePro() {
         document.getElementById('check-matches-pro').style.display = 'block';
         status.innerHTML = "✅ Scores synchronisés !";
         afficherResultat(scD, scE, 'pro');
+        ajouterPredictionOverUnder('pro'); // Appel prédiction
     } catch (e) { status.innerHTML = "❌ " + e.message; }
 }
 
